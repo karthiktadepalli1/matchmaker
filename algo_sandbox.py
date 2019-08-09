@@ -1,20 +1,8 @@
-"""
-design of an agent for an assignment market -
-- like the teacher class in ech
-- has an ID, a preference set over the items, a (possible) item of ownership
-
-design of an item in an assignment market to be compatible with the given agent class
-- has a name
-
-
-REDESIGN
-
-"""
 import numpy as np
 import pulp as plp
+from copy import deepcopy
 
 # def serialdict(agents, items, ordering = None):
-#     # normalize so that |agents| = |items| beforehand
 #     assignment = {}
 #     orderedAgents = np.random.permutation(agents)
 #     if ordering is not None:
@@ -34,10 +22,11 @@ import pulp as plp
 # def rv(agents, items, rv):
 
 
-# this is all designed with graph Inputs
+# this is all designed with graph inputs
 
 def pre_bipartite(G):
     # preprocess to ensure |students| = |schools|
+    # may be unnecessary - revisit
     all = G.nodes()
     students = [n for n in all if n['bipartite'] = 0]
     schools = [n for n in all if n['bipartite'] = 1]
@@ -55,8 +44,6 @@ def pre_bipartite(G):
     for i in range(1, n-m+1):
         name = 'dummy' + str(i)
         G.add_node(name, bipartite = type, ranking = dummyDate)
-        # G.node[name]['bipartite'] = type
-        # G.node[name]['ranking'] = dummyData
     return G
 
 def serialdictG(G, ordering = None):
@@ -96,11 +83,80 @@ def randG(G):
         G.remove(chosen)
     return matchG
 
+# helper to return the metadata associated with a node
+def quickData(G, nodeName):
+    for n, d in G.nodes.items():
+        if n == nodeName:
+            return d
+
 def galeShapleyG(G):
-    all = G.nodes()
-    students = [n for n in all if n['bipartite'] = 0]
-    schools = [n for n in all if n['bipartite'] = 1]
-    matches = []
-    n = min(len(students), len(schools))
-    while len(matches) < n:
-        for 
+    nx.set_node_attributes(G, {'currMatch': None, 'numProposals': 0})
+    students = [(student, data) for student, data in G.nodes.items() if data['bipartite'] = 0]
+    schools = [(school, data) for school, data in G.nodes.items() if data['bipartite'] = 1]
+    while True:
+        freeStudents = [(n, d) for n, d in students if d['currMatch'] = None]
+        if len(freeStudents) = 0:
+            break
+        for student, stuDict in freeStudents:
+            stuRanks = deepcopy(stuDict['ranking'])
+            numProps = stuDict['numProposals']
+            stuRanks = stuRanks[numProps:]
+            # ASSUMES LIST REPRESENTATION OF RANKS - MAKE THIS CONSISTENT
+            for school in stuRanks:
+                numProps += 1
+                schDict = quickData(G, school)
+                if schDict['currMatch'] is None:
+                    stuDict['currMatch'] = school
+                    schDict['currMatch'] = student
+                    break
+                else:
+                    schRanks = schDict['ranking']
+                    toUnmatch = schDict['currMatch']
+                    if schRanks[student] < schRanks[toUnmatch]:
+                        schDict['currMatch'] = student
+                        stuDict['currMatch'] = school
+                        unmatchedStud = quickData(toUnmatch)
+                        unmatchedStud['currMatch'] = None
+                        break
+            # this is only reached if all schools reject
+            stuDict['currMatch'] = 'unmatched'
+
+    matchG = nx.Graph()
+    matchG.add_nodes_from(G)
+    for n, d in matchG.nodes.items():
+        matchedTo = d['currMatch']
+        if matchedTo != 'unmatched':
+            matchG.add_edge([n, matchedTo])
+
+def TTC(G):
+    
+
+
+# def galeShapleyG(G):
+#     matchG = nx.Graph()
+#     matchG.add_nodes_from(G)
+#     nx.set_node_attributes(matchG, values=None, name='currMatch')
+#     all = matchG.nodes(data=True)
+#     students = [(n, d) for n, d in all if d['bipartite'] = 0]
+#     schools = [(n, d) for n, d in all if d['bipartite'] = 1]
+#     n = min(len(students), len(schools))
+#     # free => unmatched + still have a school to propose to
+#     freeStudents = deepcopy(students)
+#     freeschools = deepcopy(schools)
+#     while len(freeStudents) > 0:
+#         for student in freeStudents:
+#             stuRanks = student[1]['ranking']
+#             for school in stuRanks:
+#                 if school in freeschools:
+#                     freeschools.remove(school)
+#                     school[1]['currMatch'] = student[0]
+#                     freeStudents.remove(student)
+#                     student[1]['currMatch'] = school[0]
+#                     break
+#                 else:
+#                     c = [(s, d) for s, d in schools if s == school]
+#                     schDict = c[0][1]
+#                     cRanks = schDict['ranking']
+#                     if cRanks[schDict['currMatch']] > cRanks[student[0]]:
+#                         freeStudents.remove(student)
+#                         schDict['currMatch'] = student[0]
