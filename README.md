@@ -1,0 +1,26 @@
+# Readme
+
+This is a codebase on which researchers can build to run simulations of matching markets, assignment markets, and dynamic matching markets.
+
+### Goals
+
+Matching simulations are useful in two main contexts:
+1. A researcher has a dataset of preferences for market participants, and wants to analyze counterfactual markets with this data. This frequently uses canonical mechanisms as comparisons, and quick-access implementations of those mechanisms would be helpful.
+2. A researcher wants to analyze a complex, multi-parameter market. The number of free parameters (e.g. time, entry/exit, compatibility, non-convex preferences, etc) makes this less amenable to theoretical analysis, so they would like to run simulations to see the outcomes of such a market.
+
+The goal, then, is to aid researchers in both of these contexts. Three design features will help accomplish this:
+1. **Comprehensiveness** - the goal is to implement the most commonly-used subset of matching algorithms, making lives easier for the researchers who would otherwise have to implement these algorithms themselves.
+2. **Usability** - researchers are not the most tech-savvy people, and user-friendliness makes it more likely that they will prefer this package. Providing the tools very simply and making it easy to produce good visualizations is essential here.
+3. **Flexibility** - most researchers are working on matching models at the cutting edge, which means we necessarily cannot build those models in. The goal is to allow researchers to fork our code to implement their models relatively easily.
+
+### TODOs (8/10/19)
+
+1. Modify the setup to implement:
+ - dynamic matching
+ - auctions?
+2. New algorithms for:
+ - probabilistic serial mechanism
+ - rank-value assignment/matching
+3. Write a user-friendly frontend that takes common forms of user input and transforms it to/from graph form. Graph implementations should be strictly backend.
+4. Introduce visualization tools built on networkx and nxviz.
+5. Introduce richer type spaces/utility functions rather than relying solely on strict ranks.
