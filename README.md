@@ -1,6 +1,6 @@
 # Readme
 
-This is a codebase on which researchers can build to run simulations of matching markets, assignment markets, and dynamic matching markets.
+`matchmaker` is a codebase in progress on which researchers can build to run simulations of matching markets, assignment markets, and dynamic matching markets. It implements markets as undirected graphs and produces matchings as undirected graphs with edges between two matched nodes. `matchmaker` is built upon the `networkx` library.
 
 ### Goals
 
@@ -13,14 +13,13 @@ The goal, then, is to aid researchers in both of these contexts. Three design fe
 2. **Usability** - researchers are not the most tech-savvy people, and user-friendliness makes it more likely that they will prefer this package. Providing the tools very simply and making it easy to produce good visualizations is essential here.
 3. **Flexibility** - most researchers are working on matching models at the cutting edge, which means we necessarily cannot build those models in. The goal is to allow researchers to fork our code to implement their models relatively easily.
 
-### TODOs (8/10/19)
+### TODOs (12/30/19)
 
 1. Modify the setup to implement:
  - dynamic matching
- - auctions?
-2. New algorithms for:
- - probabilistic serial mechanism
- - rank-value assignment/matching
-3. Write a user-friendly frontend that takes common forms of user input and transforms it to/from graph form. Graph implementations should be strictly backend.
-4. Introduce visualization tools built on networkx and nxviz.
-5. Introduce richer type spaces/utility functions rather than relying solely on strict ranks.
+ - many-to-one matching
+2. New algorithms:
+ - competitive equilibrium with equal incomes
+3. Introduce visualization tools built on networkx and nxviz.
+4. Modify the implemented algorithms to work with indifferences in preferences.
+5. Introduce richer type spaces/utility functions rather than relying solely on ranks.
