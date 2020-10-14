@@ -13,7 +13,7 @@ The goal, then, is to aid researchers in both of these contexts. Three design fe
 2. **Usability** - researchers are not the most tech-savvy people, and user-friendliness makes it more likely that they will prefer this package. Providing the tools very simply and making it easy to produce good visualizations is essential here.
 3. **Flexibility** - most researchers are working on matching models at the cutting edge, which means we necessarily cannot build those models in. The goal is to allow researchers to fork our code to implement their models relatively easily.
 
-### TODOs (12/30/19)
+### TODOs (9/30/20)
 
 1. Modify the setup to implement:
  - dynamic matching
